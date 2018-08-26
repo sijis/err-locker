@@ -109,7 +109,7 @@ class Locker(BotPlugin):
         List all locked objects.
         """
         with self.threadlock:
-            if len(self['locks']) == 0:
+            if not self['locks']:
                 yield "Nothing is currently locked"
                 return
 
