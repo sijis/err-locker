@@ -1,5 +1,7 @@
 import datetime
 import threading
+
+import pendulum
 from errbot import BotPlugin, arg_botcmd, botcmd, re_botcmd
 
 
@@ -97,10 +99,12 @@ class Locker(BotPlugin):
                 return
 
             for lock, details in self['locks'].items():
-                yield "{0} locked by {1[by]} on {1[at]} ({1[message]})".format(
-                    lock,
-                    details
-                )
+                ago = pendulum.instance(details['at']).diff_for_humans()
+                details.update({
+                    'lock': lock,
+                    'ago': ago,
+                })
+                yield "{lock} locked by {by} {ago} on {at} ({message})".format_map(details)
 
     @re_botcmd(pattern=r'^lock ([\w]+)( |\.)?$', prefixed=False)
     def re_lock(self, message, match):
