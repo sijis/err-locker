@@ -42,9 +42,11 @@ class Locker(BotPlugin):
                 if locks[what]['by'] == by:
                     return "You already locked this"
                 else:
-                    return "{what} is already locked by {who} and must be unlocked first".format(
+                    ago = pendulum.instance(locks[what]['at']).diff_for_humans()
+                    return "{what} is already locked by {who} ({ago}) and must be unlocked first".format(
                         what=what,
-                        who=locks[what]['by']
+                        who=locks[what]['by'],
+                        ago=ago,
                     )
 
             locks[what] = {
@@ -73,9 +75,11 @@ class Locker(BotPlugin):
                 return "{} unlocked".format(what)
             else:
                 if not force:
-                    return "{what} was locked by {who}, not unlocking without --force".format(
+                    ago = pendulum.instance(lock['at']).diff_for_humans()
+                    return "{what} was locked by {who} ({ago}), not unlocking without --force".format(
                         what=what,
-                        who=lock['by']
+                        who=lock['by'],
+                        ago=ago,
                     )
                 else:
                     del locks[what]
