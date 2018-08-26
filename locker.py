@@ -14,14 +14,6 @@ class Locker(BotPlugin):
         if 'locks' not in self:
             self['locks'] = {}
 
-    def callback_message(self, message):
-        """
-        Triggered for every received message that isn't coming from the bot itself
-
-        You should delete it if you're not using it to override any default behaviour
-        """
-        pass
-
     @arg_botcmd('what', type=str)
     @arg_botcmd('-m', '--message', type=str, unpack_args=False)
     def lock(self, message, args):
