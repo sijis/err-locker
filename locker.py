@@ -91,6 +91,23 @@ class Locker(BotPlugin):
         """
         List all locked objects.
         """
+        locked_items = self._locks(message=message, args=args)
+        for lock in locked_items:
+            yield lock
+
+    @botcmd
+    def locked(self, message, args):
+        """
+        List all locked objects.
+        """
+        locked_items = self._locks(message=message, args=args)
+        for lock in locked_items:
+            yield lock
+
+    def _locks(self, message, args):
+        """
+        List all locked objects.
+        """
         with self.threadlock:
             if len(self['locks']) == 0:
                 yield "Nothing is currently locked"
